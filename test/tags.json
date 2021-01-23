@@ -1,0 +1,3 @@
+{"_id":{"$oid":"6007223977929425708988e4"},"name":"Sports","description":"Just go do it","colorCode":"ffffff"}
+{"_id":{"$oid":"6007230a77929425708988e7"},"name":"Cooking","description":"Cant Cook won't cook","colorCode":"ff00ff"}
+{"_id":{"$oid":"6007230a77929425708988e8"},"name":"Work","description":"All things work","colorCode":"0000ff"}

@@ -2,7 +2,7 @@
 
 
 ### List of all tags
-'''
+```
 {
   tags{
     id
@@ -11,11 +11,11 @@
     colorCode
   }
 }
-'''
+```
 
 ### Tag by ID
 
-'''
+```
 {
   tag(id: "6007230a77929425708988e7") {
     id
@@ -24,10 +24,10 @@
     colorCode
   }
 }
-'''
+```
 
 ### List of all links
-'''
+```
 {
   links {
     id
@@ -35,10 +35,10 @@
     description
   }
 }
-'''
+```
 
 ### Link by ID
-'''
+```
 {
   link(id: "6007230a77929425708988e7") {
     URL
@@ -46,6 +46,6 @@
     userId
   }
 }
-'''
+```
 
 

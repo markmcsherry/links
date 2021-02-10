@@ -22,11 +22,13 @@ const server = express();
 
 //Connect to database
 console.log("Connecting to DB...");
-mongoose.connect(config.get('dbSettings.dbURI'), {useNewUrlParser: true});
+var dbURI = config.get('dbSettings.dbURI')
+mongoose.connect(dbURI , {useNewUrlParser: true, useUnifiedTopology: true});
+
 var dbConn = mongoose.connection;
 dbConn.on('error', console.error.bind(console, 'connection error:'));
 dbConn.once('open', function() {
-  console.log('Connected to database!');
+  console.log('Connected to database: ' + dbURI);
 });
 
 

@@ -36,7 +36,4 @@ routes.post('/fileupload', (req, res) => {
     });
 });
 
-
-
-
 module.exports = routes;

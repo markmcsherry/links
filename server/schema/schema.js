@@ -2,9 +2,8 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 const linkModel = require('../models/link.js');
-//var userModel = require('../models/user.js');
+var userModel = require('../models/user.js');
 var tagModel = require('../models/tag.js');
-
 
 
 const {
@@ -12,10 +11,12 @@ const {
   GraphQLString, 
   GraphQLID, 
   GraphQLInt, 
+  GraphQLBoolean,
   GraphQLList,
   GraphQLSchema,
   GraphQLNonNull
 } = graphql;
+
 
 const LinkType = new GraphQLObjectType({
   name: 'Link',
@@ -24,17 +25,8 @@ const LinkType = new GraphQLObjectType({
     URL: {type: GraphQLString},
     description: {type: GraphQLString},
     userId: {type: GraphQLString},
-/*    books: {
-      type: new GraphQLList(BookType),
-      resolve(parent,args){
-//        return _.filter(books, {authorId: parent.id});
-        return Book.find({authorID: parent.id});
-      }
-
-    } */
   })
 });
-
 
 
 const TagType = new GraphQLObjectType({
@@ -44,127 +36,137 @@ const TagType = new GraphQLObjectType({
     name: {type: GraphQLString},
     description: {type: GraphQLString},
     colorCode: {type: GraphQLString},
-/*
-    author:{
-      type: AuthorType,
-      resolve(parent, args){
-//        return _.find(authors, {id:parent.authorId});
-          return Author.findById(parent.authorId);
-      }
-    }*/
   })
 });
-/*
-const AuthorType = new GraphQLObjectType({
-  name: 'Author',
+
+
+const UserType = new GraphQLObjectType({
+  name: 'User',
   fields:() => ({
     id: {type: GraphQLID},
-    name: {type: GraphQLString},
-    age: {type: GraphQLInt},
-    books: {
-      type: new GraphQLList(BookType),
-      resolve(parent,args){
-//        return _.filter(books, {authorId: parent.id});
-        return Book.find({authorID: parent.id});
-      }
-
-    }
+    userName: {type: GraphQLString},
+    email: {type: GraphQLString},
+    firstName: {type: GraphQLString},
+    lastName: {type: GraphQLString},
+    password: {type: GraphQLString},
+    avatar: {type: GraphQLString},
+    active: {type: GraphQLBoolean},
   })
 });
-*/
+
 
 
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-      link: {
-          type: LinkType,
-          args: {id: {type: GraphQLID}},
-          resolve(parent, args){
-            return linkModel.findById(args.id);
-          }  
-      },
-      links: {
-        type: new GraphQLList(LinkType),
-        resolve(parent, args){
-          return linkModel.find();
-        }
-      },  
-      tag: {
-        type: TagType,
-          args: {id: {type: GraphQLID}},
-          resolve(parent, args){
-            //code to get data from db / other source
-            return tagModel.findById(args.id);
-          }  
-        },
-      tags:{
-        type: new GraphQLList(TagType),
-        resolve(parent, args){
-          return tagModel.find();
-        }
+    user: {
+      type: UserType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return userModel.findById(args.id);
       }
-
-      /*      author: {
-        type: AuthorType,
-          args: {id: {type: GraphQLID}},
-          resolve(parent, args){
-            //code to get data from db / other source
-//            return _.find(authors,{ id: args.id});
-            return Author.findById(args.id);
-          }  
-        },*/
-/*  
-      authors:{
-        type: new GraphQLList(AuthorType),
-        resolve(parent, args){
-//          return authors
-          return Author.find();
-        }
-      }*/
-
+    },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve(parent, args) {
+        return userModel.find();
+      }
+    },
+    link: {
+      type: LinkType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return linkModel.findById(args.id);
+      }
+    },
+    links: {
+      type: new GraphQLList(LinkType),
+      resolve(parent, args) {
+        return linkModel.find();
+      }
+    },
+    tag: {
+      type: TagType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        //code to get data from db / other source
+        return tagModel.findById(args.id);
+      }
+    },
+    tags: {
+      type: new GraphQLList(TagType),
+      resolve(parent, args) {
+        return tagModel.find();
+      }
     }
-
+  }
 });  
-/*
+
+
 const Mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-      addAuthor: {
-          type: AuthorType,
-          args: {
-              name: { type: new GraphQLNonNull(GraphQLString) },
-              age: { type: new GraphQLNonNull(GraphQLInt) }
-          },
-          resolve(parent, args){
-              var author =  new Author({
-                  name: args.name,
-                  age: args.age
-              });
-              return author.save();
-          }
+    addUser: {
+      type: UserType,
+      args: {
+        userName: { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: new GraphQLNonNull(GraphQLString) },
+        firstName: { type: new GraphQLNonNull(GraphQLString) },
+        lastName: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) },
+        avatar: { type: new GraphQLNonNull(GraphQLString) },
+        active: { type: new GraphQLNonNull(GraphQLBoolean) }
       },
-      addBook: {
-          type: BookType,
-          args: {
-              name: { type: new GraphQLNonNull(GraphQLString) },
-              genre: { type: new GraphQLNonNull(GraphQLString) },
-              authorId: { type: new GraphQLNonNull(GraphQLID) }
-          },
-          resolve(parent, args){
-              let book = new Book({
-                  name: args.name,
-                  genre: args.genre,
-                  authorId: args.authorId
-              });
-              return book.save();
-          }
+      resolve(parent, args) {
+        var user = new userModel({
+          userName: args.userName,
+          email: args.email,
+          firstName: args.firstName,
+          lastName: args.lastName,
+          password: args.password,
+          avatar: args.avatar,
+          active: args.active
+        });
+        return user.save();
       }
+    },
+    addLink: {
+      type: LinkType,
+      args: {
+        URL: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+        userId: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        var link = new linkModel({
+          URL: args.URL,
+          description: args.description,
+          userId: args.userId
+        });
+        return link.save();
+      }
+    },
+    addTag: {
+      type: TagType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: new GraphQLNonNull(GraphQLString) },
+        colorCode: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        let tag = new tagModel({
+          name: args.name,
+          description: args.description,
+          colorCode: args.colorCode
+        });
+        return tag.save();
+      }
+    }
   }
 });
-*/
+
 module.exports = new GraphQLSchema({
-  query: RootQuery
-//  mutation: Mutation
+  query: RootQuery,
+  mutation: Mutation
 });

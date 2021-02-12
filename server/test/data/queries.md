@@ -26,6 +26,21 @@
 }
 ```
 
+### Add a tag
+
+```
+mutation {
+  addTag(name:"tag name", description:"tag description" colorCode: "ffffff"){
+    id
+    name
+    description
+    colorCode
+    
+  }
+}
+```
+
+
 ### List of all links
 ```
 {
@@ -48,4 +63,43 @@
 }
 ```
 
+
+### Add a link
+
+```
+mutation {
+  addLink(URL:"link url", description:"link description" userId: "user id"){
+    id
+    URL
+    description
+    userId
+  }
+}
+```
+
+### Add a user
+
+```
+mutation {
+  addUser(userName:"usera", email:"usera@abc.com" firstName: "usera" lastName: "the first" password:"dont look its plaintext" avatar:"my pic" active: true){
+    id
+    
+  }
+}
+```
+
+### List Users
+
+```
+{
+  users{
+    id
+    userName
+    firstName
+    lastName
+    avatar
+    active
+}
+}
+```
 

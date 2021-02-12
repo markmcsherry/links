@@ -53,6 +53,11 @@ function serverStartup() {
   //server.use(express.urlencoded({extended: false}));
 
   //TODO: Add in Serve Static
+  
+  //Setup template engine
+  server.set("views", __dirname);
+  server.set('view engine', 'ejs');
+
 
   //Add routes
   server.use("/", baseRoutes);
@@ -64,6 +69,7 @@ function serverStartup() {
         graphiql: true
       }));
   
+
 
   const port = config.get('expressSettings.serverPort');  
   console.log('Express Server starting...');
